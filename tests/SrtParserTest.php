@@ -1,6 +1,6 @@
 <?php
 
-use Benlipp\SrtParser;
+use Benlipp\SrtParser\Parser;
 use PHPUnit\Framework\TestCase;
 
 class SrtParserTest extends TestCase
@@ -11,7 +11,7 @@ class SrtParserTest extends TestCase
      */
     public function testAnySyntaxError()
     {
-        $var = new SrtParser();
+        $var = new Parser();
         $this->assertTrue(is_object($var));
         unset($var);
     }
