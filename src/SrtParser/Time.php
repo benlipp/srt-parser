@@ -8,9 +8,11 @@ class Time
 
     public static function get($time)
     {
-        $parsed = self::parseTime($time);
-
-        return self::formatTime($parsed);
+        if (isset($time)){
+            $parsed = self::parseTime($time);
+            return self::formatTime($parsed);
+        }
+        return null;
     }
 
     /**

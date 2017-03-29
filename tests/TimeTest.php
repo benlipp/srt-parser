@@ -9,7 +9,7 @@ class TimeTest extends TestCase
     /**
      * Check for possible syntax errors
      */
-    public function testAnySyntaxError()
+    public function testSyntax()
     {
         $var = new Time();
         $this->assertTrue(is_object($var));
