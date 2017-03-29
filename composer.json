@@ -1,7 +1,7 @@
 {
     "name": "benlipp/srt-parser",
     "description": "Easily Parse SRT Subtitle Files",
-    "keywords": ["template", "composer", "package"],
+    "keywords": ["srt", "subtitles", "parser"],
     "license": "DBAD",
     "authors": [
         {
