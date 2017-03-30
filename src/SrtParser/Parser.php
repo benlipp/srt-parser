@@ -8,7 +8,7 @@ class Parser
 {
 
     private $data;
-    const SRT_REGEX_STRING = '/\d\s(\d\d:\d\d:\d\d,\d\d\d)\s-->\s(\d\d:\d\d:\d\d,\d\d\d)\s((?:.*\S.*\s)*)/';
+    const SRT_REGEX_STRING = '/\d\r\n\r\n((?:.*\r\n)*)\r\n/';
 
     public function loadFile($file)
     {
@@ -24,25 +24,58 @@ class Parser
 
     public function parse()
     {
-        //add a newline to the end for ease of parsing
-        $data = $this->data . "\n";
-        $matches = [];
-        preg_match_all(self::SRT_REGEX_STRING, $this->data, $matches, PREG_SET_ORDER);
+        $splitData = self::splitData($this->data);
+        $captions = self::buildCaptions($splitData);
 
-        return $this->buildCaptions($matches);
+        return $captions;
     }
 
-    private function buildCaptions($matches)
+    /**
+     * split data into workable chunks
+     * @return array
+     */
+    private static function splitData($data)
+    {
+        $sections = explode("\r\n\r\n", $data);
+        $matches = [];
+        foreach ($sections as $section) {
+            $matches[] = explode("\r\n", $section, 3);
+        }
+
+        return $matches;
+    }
+
+    private static function buildCaptions($matches)
     {
         $captions = [];
         foreach ($matches as $match) {
-            $startTime = $match[1];
-            $endTime = $match[2];
-            $text = rtrim($match[3]);
-            $caption = new Caption($startTime, $endTime, $text);
-            $captions[] = $caption;
+            $times = self::timeMatch($match[1]);
+            $text = self::textMatch($match[2]);
+
+            $captions[] = new Caption($times['start_time'], $times['end_time'], $text);
         }
 
         return $captions;
+    }
+
+    private static function timeMatch($timeString)
+    {
+        $matches = [];
+        preg_match_all('/(\d\d:\d\d:\d\d,\d\d\d)\s-->\s(\d\d:\d\d:\d\d,\d\d\d)/', $timeString, $matches,
+            PREG_SET_ORDER);
+        $time = $matches[0];
+
+        return [
+            'start_time' => $time[1],
+            'end_time'   => $time[2]
+        ];
+    }
+
+    private static function textMatch($textString)
+    {
+        $text = rtrim($textString);
+        $text = str_replace("\r\n", "\n", $text);
+
+        return $text;
     }
 }
