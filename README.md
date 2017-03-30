@@ -31,6 +31,11 @@ foreach($captions as $caption){
     echo "Text: " . $caption->text;
 }
 ````
+You can also chain the `parse()` method:
+````
+$parser = new Parser();
+$captions = $parser->loadFile($srtPath)->parse();
+````
 
 Contributing
 -
