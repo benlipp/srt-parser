@@ -52,7 +52,7 @@ class ParserTest extends TestCase
             [
                 'startTime' => 0,
                 'endTime'   => 3,
-                'text'      => "Type Caption Text Here\nCar is backing up a little bit"
+                'text'      => "Type Caption Text HereCar is backing up a little bit"
             ],
             [
                 'startTime' => 3,
@@ -62,7 +62,7 @@ class ParserTest extends TestCase
             [
                 'startTime' => 4,
                 'endTime'   => 5,
-                'text'      => "Don't hit it!"
+                'text'      => "Don't hit it!\nTesting Multi"
             ],
 
         ];
