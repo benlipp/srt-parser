@@ -22,6 +22,13 @@ class Parser
         return $this;
     }
 
+    public function loadString($string)
+    {
+        $this->data = $string;
+
+        return $this;
+    }
+
     public function parse()
     {
         $splitData = self::splitData($this->data);
