@@ -19,9 +19,20 @@ Import the `Parser` class: `use Benlipp\SrtParser\Parser;`
 Use it:
 ````
 $parser = new Parser();
+
 $parser->loadFile('/path/to/srtfile.srt');
+
 $captions = $parser->parse();
 ````
+or
+````
+$parser = new Parser();
+
+$parser->loadString($formatted_caption_input);
+
+$captions = $parser->parse();
+````
+
 `parse()` returns an array of captions. Use them like so:
 
 ````
@@ -31,6 +42,25 @@ foreach($captions as $caption){
     echo "Text: " . $caption->text;
 }
 ````
+A caption can be returned as an array instead of an object, if you prefer. The array is `snake_case` for compatibility with Laravel's attributes.
+````
+foreach($captions as $caption){
+    $caption = $caption->toArray();
+    echo "Start Time: " . $caption['start_time'];
+    echo "End Time: " . $caption['end_time'];
+    echo "Text: " . $caption['text'];
+}
+````
+For Laravel usage with a model:
+````
+$url = "https://youtu.be/dQw4w9WgXcQ";
+$video = new Video($url);
+foreach ($captions as $caption) {
+    $data = new VideoMetadata($caption->toArray());
+    $video->videoMetadata()->save($data);
+}
+````
+
 You can also chain the `parse()` method:
 ````
 $parser = new Parser();
