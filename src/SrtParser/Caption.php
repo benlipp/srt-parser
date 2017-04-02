@@ -28,4 +28,17 @@ class Caption
 
         return $this;
     }
+
+    /**
+     * Returns an array with snake_case formatted keys for Laravel
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'start_time' => $this->startTime,
+            'end_time' => $this->endTime,
+            'text' => $this->text
+        ];
+    }
 }
