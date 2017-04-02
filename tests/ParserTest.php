@@ -32,6 +32,14 @@ class ParserTest extends TestCase
         $this->assertTrue(is_object($result));
     }
 
+    public function testLoadString()
+    {
+        $captionString = file_get_contents(__DIR__ . '/files/SampleCaptions.srt');
+        $parser = new Parser();
+        $result = $parser->loadString($captionString);
+        $this->assertTrue(is_object($result));
+    }
+
 
     public function testParse()
     {
