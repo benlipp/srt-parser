@@ -2,7 +2,8 @@ SRT Parser
 =
 [![Build Status](https://travis-ci.org/benlipp/srt-parser.svg?branch=master)](https://travis-ci.org/benlipp/srt-parser)
 
-A PHP library to parse SRT files.
+A PHP library to parse SRT files.  
+Built by Ben Lippincott for [LiveTech](http://www.liveteched.com/)
 
 Installation / Requirements
 -
