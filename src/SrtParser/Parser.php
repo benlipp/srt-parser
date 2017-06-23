@@ -21,7 +21,7 @@ class Parser
 
         return $this;
     }
-
+    
     public function loadString($string)
     {
         $this->data = $string;
@@ -43,12 +43,15 @@ class Parser
      */
     private static function splitData($data)
     {
-        $sections = explode("\r\n\r\n", $data);
+        //find digits followed by a single line break and timestamps
+        $sections = preg_split('/\d+(?:\r\n|\r|\n)(?=(?:\d\d:\d\d:\d\d,\d\d\d)\s-->\s(?:\d\d:\d\d:\d\d,\d\d\d))/m', $data,-1,PREG_SPLIT_NO_EMPTY);
         $matches = [];
         foreach ($sections as $section) {
-            $matches[] = explode("\r\n", $section, 3);
+            //cleans out control characters, borrowed from https://stackoverflow.com/a/23066553
+            $section = preg_replace('/[^\PC\s]/u', '', $section);
+            if(trim($section) == '') continue;
+            $matches[] = preg_split('/(\r\n|\r|\n)/', $section, 2,PREG_SPLIT_NO_EMPTY);
         }
-
         return $matches;
     }
 
@@ -56,8 +59,8 @@ class Parser
     {
         $captions = [];
         foreach ($matches as $match) {
-            $times = self::timeMatch($match[1]);
-            $text = self::textMatch($match[2]);
+            $times = self::timeMatch($match[0]);
+            $text = self::textMatch($match[1]);
 
             $captions[] = new Caption($times['start_time'], $times['end_time'], $text);
         }
